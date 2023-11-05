@@ -12,20 +12,20 @@ the client id with your App's client id.
 the spotify-profile-demo profile you just made.  My files (style2.css) and (spotscript.js) will just be added, they won't replace anything.
 
 Running Spotify-Profile-Demo Folder:
-1.) Open terminal and type these things:
-2.) cd [Your File Location Here]
-3.) cd [until you get to the folder that has spotify-profile-demo]
-4.) cd spotify-profile-demo
-5.) npm run dev
-6.) Open http://localhost:5173/
+-  Open terminal and type these things:
+-  cd [Your File Location Here]
+-  cd [until you get to the folder that has spotify-profile-demo]
+-  cd spotify-profile-demo
+-  npm run dev
+-  Open http://localhost:5173/
 
 If you run into Errors do this:
-1.) Make sure you have node.js installed
-2.) Type into a terminal:  npm create vite@latest spotify-profile-demo -- --template vanilla 
-3.) Type in terminal:  cd spotify-profile-demo 
-4.) Type in terminal:  npm install 
-5.) Type in terminal:  npm run dev
-6.) Then replace your (index.html) with my (index.html)
-7.) Add my (style2.css) and (spotscript.js) into the spotify-profile-demo folder
-8.) Then try running the folder again (also make sure you either contact me for access to Spotify App or replace client ID with your's)
+-   Make sure you have node.js installed
+-   Type into a terminal:  npm create vite@latest spotify-profile-demo -- --template vanilla 
+-   Type in terminal:  cd spotify-profile-demo 
+-   Type in terminal:  npm install 
+-   Type in terminal:  npm run dev
+-   Then replace your (index.html) with my (index.html)
+-   Add my (style2.css) and (spotscript.js) into the spotify-profile-demo folder
+-   Then try running the folder again (also make sure you either contact me for access to Spotify App or replace client ID with your's)
 
