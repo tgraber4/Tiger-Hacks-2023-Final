@@ -8,4 +8,4 @@ Option 2:
 the client id with your App's client id.
   - In addition to that, you'll have to dowload Node.js and setup some stuff if you run into errors
   - If you run into errors, you might have to follow this tutorial :https://developer.spotify.com/documentation/web-api/howtos/web-app-profile
-  and just copy the index.html 
+  and just copy the index.html, style.css, and javascript file.
