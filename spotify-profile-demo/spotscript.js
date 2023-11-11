@@ -298,6 +298,10 @@ var pagerunner = function () {
         ctx.font = "40px Arial"
         ctx.fillText("Current Song", 900, 300);
         ctx.fillText(trackname, 1020 - ctx.measureText(trackname).width / 2, 370);
+        ctx.font = "25px Arial"
+        ctx.fillStyle = "#ff6666"
+        ctx.fillText("Requires Python", 930, 570);
+        ctx.fillText("Code to Update", 935, 600);
         plotlist = [];
         arrowloader();
         for (var j = 0; j < words.length; j++) {
@@ -340,6 +344,11 @@ var pagerunner = function () {
         document.getElementById("body").style.backgroundColor = "#191414";
         ctx.fillStyle = "#191414";
         ctx.fillRect(0,0,width,height);
+
+        ctx.font = "25px Arial"
+        ctx.fillStyle = "#ff6666"
+        ctx.fillText("Requires Python", 330, 570);
+        ctx.fillText("Code to Update", 335, 600);
 
         ctx.fillStyle = "#1ed760";
         ctx.font = "80px Georgia";
