@@ -1,22 +1,15 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-var tempPlaylist = ["My Playlist #1", "Colton's Playlist", "test", "test2", "test3", "fellow"];
-var tempsongnum = [45, 25, 0, 40, 0, 10];
-var tempImages = ["", "", "", "", "", "", "", "", "", ""];
+var tempPlaylist = [];
 var playlist = [];
 var songnum = [];
+var username = "";
 var playlistnum = [];
+var firsttracks = [];
 var images = ["", "", "", "", "", "", "", "", "", ""];
-for (var i = 0; i < tempPlaylist.length; i++) {
-    if (tempsongnum[i] > 0) {
-        playlist.push(tempPlaylist[i]);
-        songnum.push(tempsongnum[i]);
-        images.push(tempImages[i])
-        playlistnum.push(i);
-    }
-}
+var trackname = "";
 
-var playlength = playlist.length;
+var playlength = 0;
 var canvasupdate = function (canwidth, canheight) {
     canvas.width = window.screen.width - canwidth;
     if (canheight != -1) {
@@ -34,8 +27,6 @@ var canvasx = Math.round(cRect.left)
 var canvasy = Math.round(cRect.top)
 var page = 1;
 var currentplaylist = 0; 
-// currentplaylist = playlistnum[i]
-var username = "Bobby";
 var mood1=["Confused", "Sad", "Upset"];
 var dict = {"Thunder": 20, "This": 10, "Secret": 10, "Wow": 10, "Never": 10, "Always": 10, "Running": 9, "Give": 8, "Hunt": 7}; // these are the most common words in each song
 var words = [];
@@ -267,6 +258,7 @@ var pagerunner = function () {
     imageloader();
     }
     } else if (page == 2) {
+        document.getElementById("body").style.backgroundColor = "lightblue";
         canvasupdate(0, 161);
         width = canvas.width;
         height = canvas.height;
@@ -295,14 +287,18 @@ var pagerunner = function () {
         ctx.fillText("Mood", 700 + 300 / 2 - ctx.measureText("Mood").width / 2, 400);
         arrowloader();
     } else if (page == 3) {
+        document.getElementById("body").style.backgroundColor = "black";
+        trackname = firsttracks[playlist.indexOf(currentplaylist)];
+        console.log(trackname);
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, width, height);
         ctx.fillStyle = "white"
         ctx.fillRect(860, 860, 200, 200);
         ctx.fillStyle = "lightgreen"
-        ctx.font = "100px Arial"
-        ctx.fillText("Next", 900, 300);
-
+        ctx.font = "40px Arial"
+        ctx.fillText("Current Song", 900, 300);
+        ctx.fillText(trackname, 1020 - ctx.measureText(trackname).width / 2, 370);
+        plotlist = [];
         arrowloader();
         for (var j = 0; j < words.length; j++) {
             num3 = Math.round(25 * numberofwords[j] / numberofwords[0]) * 2;
@@ -324,7 +320,6 @@ var pagerunner = function () {
             }
         }
         }
-        // console.log(plotlist);
         ctx.fillStyle = "lightgreen"
         var colorseter = function () {
             var randomcolor = Math.round(Math.random() * 3)
@@ -342,6 +337,7 @@ var pagerunner = function () {
             ctx.fillText(plotlist[i][0], plotlist[i][1] + 20, plotlist[i][2] + 20);
         }
     } else if (page == 4) {
+        document.getElementById("body").style.backgroundColor = "#191414";
         ctx.fillStyle = "#191414";
         ctx.fillRect(0,0,width,height);
 
@@ -383,20 +379,26 @@ if (!code) {
     const accessToken = await getAccessToken(clientId, code);
 
     const profile = await getProfile(accessToken);
-    console.log(profile);
-        
-
-    const playlists = await getPlaylist(accessToken, profile.id);
-    ctx.font = "50px Arial";
-    ctx.fillStyle = "black";
-    ctx.fillText("Hello ", width / 2 - 50, 80);
     username = profile.display_name;
-    ctx.fillText(username, width / 2 - ctx.measureText(username).width / 2, 150)
-    var playlist1id = playlists.items[0].id;
-    var playlist1name = playlists.items[0].name
-    const track1 = await playlistinfo(accessToken, playlist1id);
-    console.log(track1);
-    // console.log(track1.items[0].track.name);
+
+    const userplaylists = await getPlaylist(accessToken);
+    console.log(userplaylists);
+    var templength = userplaylists.items.length;
+    for (var i = 0; i < templength; i++) {
+        tempPlaylist.push(userplaylists.items[i].name);
+        if (userplaylists.items[i].tracks.total > 0) {
+            playlist.push(userplaylists.items[i].name);
+            songnum.push(userplaylists.items[i].tracks.total);
+            playlistnum.push(i);
+            const track1 = await playlistinfo(accessToken, userplaylists.items[i].id);
+            firsttracks.push(track1.items[0].track.name);
+            if (userplaylists.items[i].images.length == 1) {
+                images[playlist.length - 1] = userplaylists.items[i].images[0].url
+            }
+        }
+    }
+    playlength = playlist.length;
+
     pagerunner();
 }
 
@@ -461,8 +463,8 @@ async function getProfile(token, user_id) {
     });
     return await result.json();
 }
-async function getPlaylist(token, user_id) {
-    const result = await fetch("https://api.spotify.com/v1/users/" + user_id + "/playlists", {
+async function getPlaylist(token) {
+    const result = await fetch("https://api.spotify.com/v1/me/playlists", {
         method: "GET", headers: { Authorization: `Bearer ${token}` }
     });
     return await result.json();
@@ -475,12 +477,6 @@ async function playlistinfo(token, playlist_id) {
     return await result.json();
 }
 
-async function topItems(token) {
-    const result = await fetch("https://api.spotify.com/v1/me/top/{type}", {
-        method: "GET", headers: { Authorization: `Bearer ${token}` }
-    });
-    return await result.json();
-}
 
 
 var clicking = function (event) {
